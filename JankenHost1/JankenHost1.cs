@@ -56,9 +56,9 @@ namespace JankenHost1
             handler.Send(msg);
             // じゃんけんの手を受信
             //データの受取をReceiveで行う。
-            bytesRec = handler.Receive(bytes);
-            data1 = Encoding.UTF8.GetString(bytes, 0, bytesRec);
-            Console.WriteLine(data1);
+            int bytesRec2 = handler.Receive(bytes);
+            string data2 = Encoding.UTF8.GetString(bytes, 0, bytesRec2);
+            Console.WriteLine(data2);
 
             // ホストの手を出す
             Random random = new Random();
@@ -84,11 +84,11 @@ namespace JankenHost1
                 }
                 else if ((hostHand + 1) % 3 == clientHand)
                 {
-                    result = "ホストの勝ち";
+                    result = $"{data1}の勝ち";
                 }
                 else
                 {
-                    result = "クライアントの勝ち";
+                    result = "あなたの勝ち";
                 }
             }
             else

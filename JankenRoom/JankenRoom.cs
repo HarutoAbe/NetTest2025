@@ -34,17 +34,27 @@ namespace JankenRoom
             Socket client1 = listener.Accept();
             Console.WriteLine("クライアント1が接続しました。");
             int bytesRec1 = client1.Receive(bytes);
+            string clientName1 = Encoding.UTF8.GetString(bytes, 0, bytesRec1);
             Console.WriteLine($"{Encoding.UTF8.GetString(bytes, 0, bytesRec1)}");
+
             Socket client2 = listener.Accept();
             Console.WriteLine("クライアント2が接続しました。");
             int bytesRec2 = client2.Receive(bytes);
+            string clientName2 = Encoding.UTF8.GetString(bytes, 0, bytesRec2);
             Console.WriteLine($"{Encoding.UTF8.GetString(bytes, 0, bytesRec2)}");
+
+            Socket client3 = listener.Accept();
+            Console.WriteLine("クライアント3が接続しました。");
+            int bytesRec3 = client3.Receive(bytes);
+            string clientName3 = Encoding.UTF8.GetString(bytes, 0, bytesRec3);
+            Console.WriteLine($"{Encoding.UTF8.GetString(bytes, 0, bytesRec3)}");
 
             // クライアントにじゃんけんのメッセージを送信
             string sendData = "じゃんけんゲーム！\r\n0:ぐう　1:ちょき　2:ぱあ\r\n";
             byte[] msg = Encoding.UTF8.GetBytes(sendData);
             client1.Send(msg);
             client2.Send(msg);
+            client3.Send(msg);
 
             // クライアント1の手を受信
             bytesRec1 = client1.Receive(bytes);
@@ -56,34 +66,34 @@ namespace JankenRoom
             string client2HandStr = Encoding.UTF8.GetString(bytes, 0, bytesRec2);
             Console.WriteLine($"クライアント2の手: {client2HandStr}");
 
+            // クライアント3の手を受信
+            bytesRec3 = client3.Receive(bytes);
+            string client3HandStr = Encoding.UTF8.GetString(bytes, 0, bytesRec3);
+            Console.WriteLine($"クライアント3の手: {client3HandStr}");
+
             // 勝敗の判定
-            string result1, result2;
+            string result1, result2, result3;
             if (int.TryParse(client1HandStr.Substring(0, 1), out int client1Hand) &&
-                int.TryParse(client2HandStr.Substring(0, 1), out int client2Hand))
+                int.TryParse(client2HandStr.Substring(0, 1), out int client2Hand) &&
+                int.TryParse(client3HandStr.Substring(0, 1), out int client3Hand))
             {
-                if (client1Hand == client2Hand)
+                
+
+                if ((client1Hand + 1) % 3 == client2Hand && (client1Hand + 1) % 3 == client3Hand)
                 {
-                    result1 = result2 = "あいこ";
+                    
                 }
-                else if ((client1Hand + 1) % 3 == client2Hand)
-                {
-                    result1 = "クライアント1の勝ち";
-                    result2 = "クライアント2の負け";
-                }
-                else
-                {
-                    result1 = "クライアント1の負け";
-                    result2 = "クライアント2の勝ち";
-                }
+                
             }
             else
             {
-                result1 = result2 = "無効な手が入力されました。";
+                result1 = result2 = result3 = "無効な手が入力されました。";
             }
 
             // 結果をクライアントに送信
             client1.Send(Encoding.UTF8.GetBytes($"結果: {result1}\r\n"));
             client2.Send(Encoding.UTF8.GetBytes($"結果: {result2}\r\n"));
+            client3.Send(Encoding.UTF8.GetBytes($"結果: {result3}\r\n"));
 
             // ソケットの終了
             client1.Shutdown(SocketShutdown.Both);

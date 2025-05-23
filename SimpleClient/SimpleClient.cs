@@ -52,7 +52,7 @@ namespace socketC
             string data1 = Encoding.UTF8.GetString(bytes, 0, bytesRec);
             Console.WriteLine(data1);
 
-            //ソケットを終了している。
+            //ソケットを終了している。x
             socket.Shutdown(SocketShutdown.Both);
             socket.Close();
         }

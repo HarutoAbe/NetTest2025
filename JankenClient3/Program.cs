@@ -3,18 +3,18 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace JankenClient1
+namespace JankenClient3
 {
     class C
     {
         public static void Main()
         {
             //今回送るHello World!
-            
-            Console.WriteLine("JankenClient1");
-            string clientName = Console.ReadLine();
-            SocketClient(clientName);
-            
+
+            Console.WriteLine("JankenClient3");
+
+            string clientName3 = Console.ReadLine();
+            SocketClient(clientName3);
             Console.ReadKey();
         }
 
